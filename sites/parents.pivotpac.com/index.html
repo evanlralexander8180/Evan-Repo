@@ -5,6 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>NIL Parent Readiness Assessment | Pivot Athletic Consulting</title>
 <meta name="description" content="12 questions. 4 minutes. Know exactly where your family stands in the NIL position and what to do next.">
+<link rel="canonical" href="https://parents.pivotpac.com/">
+<link rel="icon" href="https://www.pivotpac.com/icon.png" type="image/png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Pivot Athletic Consulting">
+<meta property="og:title" content="NIL Readiness Assessment for Parents | Pivot Athletic Consulting">
+<meta property="og:description" content="12 questions. About 4 minutes. Free. See where your family stands on NIL before money and contracts show up.">
+<meta property="og:url" content="https://parents.pivotpac.com/">
+<meta property="og:image" content="https://www.pivotpac.com/images/og-default.jpg">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -74,6 +83,14 @@
     color: var(--text-soft);
     font-weight: 500;
   }
+
+  .nav a.brand { display: block; line-height: 0; }
+  .nav a.brand img { height: 30px; width: auto; display: block; }
+  .field label .opt { text-transform: none; letter-spacing: 0; font-weight: 500; color: var(--text-soft); }
+  .form-note { font-size: 13px; color: var(--text-dim); margin-top: 14px; line-height: 1.5; }
+  .form-note a, footer a { color: var(--accent); }
+  .consent .field { margin-bottom: 14px; }
+  .consent .field label { display: block; }
 
   /* Screens */
   .screen { display: none; padding: 12px 0 60px; }
@@ -493,7 +510,7 @@
 
   <header>
     <div class="nav">
-      <a href="https://www.pivotpac.com">PIVOTPAC</a>
+      <a href="https://www.pivotpac.com" class="brand" aria-label="Pivot Athletic Consulting home"><img src="https://www.pivotpac.com/images/pac-logo.png" alt="Pivot Athletic Consulting" width="96" height="30"></a>
       <span class="nav-meta">Parent Readiness</span>
     </div>
   </header>
@@ -527,9 +544,8 @@
           <div class="err">Valid email required</div>
         </div>
         <div class="field">
-          <label for="parentPhone">Phone</label>
+          <label for="parentPhone">Phone <span class="opt">(optional)</span></label>
           <input type="tel" id="parentPhone" autocomplete="tel">
-          <div class="err">Required</div>
         </div>
         <div class="field">
           <label for="athleteName">Athlete's First Name</label>
@@ -560,6 +576,7 @@
       </div>
 
       <button type="button" class="btn" id="start-btn">Begin Assessment</button>
+      <p class="form-note">Free. We use your details to follow up on your results. We never sell your information. <a href="https://assess.pivotpac.com/privacy.html">Privacy Policy</a></p>
     </form>
   </section>
 
@@ -605,17 +622,17 @@
 
     <div class="cta-block">
       <h3>Book Your Fit Session</h3>
-      <p>Your results are in. Ready to understand what they mean for your family's NIL position? Book a Fit Session with Evan directly on his calendar, or reach out at <a href="mailto:evan@pivotpac.com">evan@pivotpac.com</a>.</p>
-      <a class="btn" href="https://calendly.com/evanlralexander">Book the Fit Session</a>
+      <p>Your results are in. Ready to understand what they mean for your family's NIL position? Book a free Fit Session with Evan directly on his calendar, or email <a href="mailto:connect@pivotpac.com">connect@pivotpac.com</a>.</p>
+      <a class="btn" href="https://calendly.com/evanlralexander/sprint-session">Book a Free Fit Session</a>
     </div>
 
     <button type="button" class="btn ghost" id="retake-btn">Retake Assessment</button>
   </section>
 
   <footer>
-    Your information is private and will never be sold or shared.<br>
+    We never sell your information. <a href="https://assess.pivotpac.com/privacy.html">Privacy Policy</a><br>
     Results are designed to inform, not replace, personalized advisory guidance.<br>
-    Questions? <a href="mailto:evan@pivotpac.com">evan@pivotpac.com</a> | <a href="https://www.pivotpac.com">pivotpac.com</a>
+    Questions? <a href="mailto:connect@pivotpac.com">connect@pivotpac.com</a> | <a href="https://www.pivotpac.com">pivotpac.com</a>
   </footer>
 
 </div>
@@ -784,7 +801,6 @@ $('start-btn').addEventListener('click', () => {
   const fields = [
     { id: 'parentName', val: $('parentName').value.trim() },
     { id: 'parentEmail', val: $('parentEmail').value.trim() },
-    { id: 'parentPhone', val: $('parentPhone').value.trim() },
     { id: 'athleteName', val: $('athleteName').value.trim() },
     { id: 'athleteSport', val: $('athleteSport').value.trim() },
     { id: 'schoolLevel', val: $('schoolLevel').value }
@@ -921,6 +937,8 @@ function showResults() {
 
   // Build the payload Formspree will receive
   const payload = {
+    assessment_type: 'parent',
+
     // Lead contact info
     parent_name: formData.parentName,
     parent_email: formData.parentEmail,
@@ -955,19 +973,21 @@ function showResults() {
     utm_medium: utmMedium,
     utm_campaign: utmCampaign,
 
+    _replyto: formData.parentEmail,
+
     // Formspree subject line for email notifications
     _subject: `New Parent Assessment: ${formData.parentName} - ${tier.name} (${total}/48)`
   };
 
   // Send to Formspree
-  // Replace YOUR_FORMSPREE_ID below with the ID from your Formspree dashboard
   fetch('https://formspree.io/f/mojzqgpk', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json'
     },
-    body: JSON.stringify(payload)
+    body: JSON.stringify(payload),
+    keepalive: true
   }).catch(err => {
     // Silent fail. Do not block the user from seeing their results if the post fails.
     console.error('Submission error:', err);

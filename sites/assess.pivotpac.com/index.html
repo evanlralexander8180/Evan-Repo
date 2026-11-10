@@ -5,6 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>NIL Readiness Assessment | Pivot Athletic Consulting</title>
 <meta name="description" content="12 questions. 5 minutes. Know exactly where you stand in your NIL position and what to do next.">
+<link rel="canonical" href="https://assess.pivotpac.com/">
+<link rel="icon" href="https://www.pivotpac.com/icon.png" type="image/png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Pivot Athletic Consulting">
+<meta property="og:title" content="NIL Readiness Assessment for Athletes | Pivot Athletic Consulting">
+<meta property="og:description" content="12 questions. About 5 minutes. Free. See where you stand on NIL before money and contracts show up.">
+<meta property="og:url" content="https://assess.pivotpac.com/">
+<meta property="og:image" content="https://www.pivotpac.com/images/og-default.jpg">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -74,6 +83,14 @@
     color: var(--text-soft);
     font-weight: 500;
   }
+
+  .nav a.brand { display: block; line-height: 0; }
+  .nav a.brand img { height: 30px; width: auto; display: block; }
+  .field label .opt { text-transform: none; letter-spacing: 0; font-weight: 500; color: var(--text-soft); }
+  .form-note { font-size: 13px; color: var(--text-dim); margin-top: 14px; line-height: 1.5; }
+  .form-note a, footer a { color: var(--accent); }
+  .consent .field { margin-bottom: 14px; }
+  .consent .field label { display: block; }
 
   /* Screens */
   .screen { display: none; padding: 12px 0 60px; }
@@ -501,7 +518,7 @@
 
   <header>
     <div class="nav">
-      <a href="https://www.pivotpac.com">PIVOTPAC</a>
+      <a href="https://www.pivotpac.com" class="brand" aria-label="Pivot Athletic Consulting home"><img src="https://www.pivotpac.com/images/pac-logo.png" alt="Pivot Athletic Consulting" width="96" height="30"></a>
       <span class="nav-meta">NIL Readiness</span>
     </div>
   </header>
@@ -535,9 +552,8 @@
           <div class="err">Valid email required</div>
         </div>
         <div class="field">
-          <label for="athletePhone">Phone</label>
+          <label for="athletePhone">Phone <span class="opt">(optional)</span></label>
           <input type="tel" id="athletePhone" autocomplete="tel">
-          <div class="err">Required</div>
         </div>
         <div class="field">
           <label for="athleteSport">Sport</label>
@@ -562,6 +578,11 @@
       </div>
 
       <div class="consent" id="consent-block">
+        <div class="field" id="guardian-field">
+          <label for="guardianEmail">Parent or guardian email</label>
+          <input type="email" id="guardianEmail" autocomplete="off">
+          <div class="err">A parent or guardian email is required for high school athletes</div>
+        </div>
         <label>
           <input type="checkbox" id="consentCheck">
           <span><strong>Parental consent.</strong> I confirm a parent or legal guardian has reviewed and approved my participation. Required if you are in high school.</span>
@@ -570,6 +591,7 @@
       </div>
 
       <button type="button" class="btn" id="start-btn">Begin Assessment</button>
+      <p class="form-note">Free. We use your details to follow up on your results. We never sell your information. <a href="https://assess.pivotpac.com/privacy.html">Privacy Policy</a></p>
     </form>
   </section>
 
@@ -615,17 +637,17 @@
 
     <div class="cta-block">
       <h3>Book Your Fit Session</h3>
-      <p>Your score is in. Want to know what it actually means for your next move? Book a Fit Session with Evan, or reach him at <a href="mailto:evan@pivotpac.com">evan@pivotpac.com</a>.</p>
-      <a class="btn" href="https://calendly.com/evanlralexander">Book the Fit Session</a>
+      <p>Your score is in. Want to know what it actually means for your next move? Book a free Fit Session with Evan, or email <a href="mailto:connect@pivotpac.com">connect@pivotpac.com</a>.</p>
+      <a class="btn" href="https://calendly.com/evanlralexander/sprint-session">Book a Free Fit Session</a>
     </div>
 
     <button type="button" class="btn ghost" id="retake-btn">Retake Assessment</button>
   </section>
 
   <footer>
-    Your information is private and will never be sold or shared.<br>
+    We never sell your information. <a href="https://assess.pivotpac.com/privacy.html">Privacy Policy</a><br>
     Results are designed to inform, not replace, personalized advisory guidance.<br>
-    Questions? <a href="mailto:evan@pivotpac.com">evan@pivotpac.com</a> | <a href="https://www.pivotpac.com">pivotpac.com</a>
+    Questions? <a href="mailto:connect@pivotpac.com">connect@pivotpac.com</a> | <a href="https://www.pivotpac.com">pivotpac.com</a>
   </footer>
 
 </div>
@@ -788,6 +810,24 @@ let answers = [];
 let currentQ = 0;
 let formData = {};
 
+// Where results go. Same Formspree form as the parent assessment.
+// To split athlete and parent leads, create a second form in Formspree and change this ID.
+const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mojzqgpk';
+
+function sendToFormspree(payload) {
+  return fetch(FORMSPREE_ENDPOINT, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+    body: JSON.stringify(payload),
+    keepalive: true
+  }).then(res => {
+    if (!res.ok) console.error('Submission failed with status', res.status);
+  }).catch(err => {
+    // Never block the results screen if the send fails.
+    console.error('Submission error:', err);
+  });
+}
+
 const $ = id => document.getElementById(id);
 
 // Conditional parental consent: show for high school athletes
@@ -799,6 +839,8 @@ $('schoolLevel').addEventListener('change', () => {
     consentBlock.classList.remove('show');
     consentBlock.classList.remove('invalid');
     $('consentCheck').checked = false;
+    $('guardianEmail').value = '';
+    $('guardian-field').classList.remove('invalid');
   }
 });
 
@@ -806,7 +848,6 @@ $('start-btn').addEventListener('click', () => {
   const fields = [
     { id: 'athleteName', val: $('athleteName').value.trim() },
     { id: 'athleteEmail', val: $('athleteEmail').value.trim() },
-    { id: 'athletePhone', val: $('athletePhone').value.trim() },
     { id: 'athleteSport', val: $('athleteSport').value.trim() },
     { id: 'schoolLevel', val: $('schoolLevel').value }
   ];
@@ -820,9 +861,12 @@ $('start-btn').addEventListener('click', () => {
     if (!ok) valid = false;
   });
 
-  // Parental consent required when high school is selected
+  // Parental consent and a parent or guardian email are required when high school is selected
   const consentBlock = $('consent-block');
   if (consentBlock.classList.contains('show')) {
+    const guardianOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test($('guardianEmail').value.trim());
+    $('guardian-field').classList.toggle('invalid', !guardianOk);
+    if (!guardianOk) valid = false;
     const consentOk = $('consentCheck').checked;
     consentBlock.classList.toggle('invalid', !consentOk);
     if (!consentOk) valid = false;
@@ -836,12 +880,10 @@ $('start-btn').addEventListener('click', () => {
     athletePhone: $('athletePhone').value.trim(),
     athleteSport: $('athleteSport').value.trim(),
     schoolLevel: $('schoolLevel').value,
+    guardianEmail: $('consent-block').classList.contains('show') ? $('guardianEmail').value.trim() : '',
     consent: $('consentCheck').checked,
     timestamp: new Date().toISOString()
   };
-
-  // Hook for Mailchimp / CRM integration goes here
-  // Example: fetch('/api/lead', { method: 'POST', body: JSON.stringify(formData) });
 
   currentQ = 0;
   answers = [];
@@ -943,8 +985,38 @@ function showResults() {
     }, 100);
   });
 
-  // Hook for results submission to CRM
-  // fetch('/api/results', { method: 'POST', body: JSON.stringify({ ...formData, answers, total, pillarTotals }) });
+  // Send the lead and the results to Formspree (emails Evan)
+  const urlParams = new URLSearchParams(window.location.search);
+  sendToFormspree({
+    assessment_type: 'athlete',
+    athlete_name: formData.athleteName,
+    athlete_email: formData.athleteEmail,
+    athlete_phone: formData.athletePhone,
+    athlete_sport: formData.athleteSport,
+    school_level: formData.schoolLevel,
+    guardian_email: formData.guardianEmail,
+    parental_consent: formData.consent,
+    total_score: total,
+    max_score: 48,
+    tier: tier.name,
+    tier_description: tier.desc,
+    pillar_identity: pillarTotals["Identity Foundation"],
+    pillar_decisions: pillarTotals["Decision Framework"],
+    pillar_infrastructure: pillarTotals["Performance Infrastructure"],
+    pillar_optionality: pillarTotals["Optionality"],
+    answers_detail: QUESTIONS.map((q, i) => ({
+      pillar: q.pillar,
+      question: q.text,
+      answer: q.options[answers[i]].text,
+      score: q.options[answers[i]].score
+    })),
+    submitted_at: new Date().toISOString(),
+    utm_source: urlParams.get('utm_source') || '',
+    utm_medium: urlParams.get('utm_medium') || '',
+    utm_campaign: urlParams.get('utm_campaign') || '',
+    _replyto: formData.athleteEmail,
+    _subject: `New Athlete Assessment: ${formData.athleteName} - ${tier.name} (${total}/48)`
+  });
 
   showScreen('results');
 }
