@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NIL Readiness Assessment | Pivot Athletic Consulting</title>
+<meta name="description" content="12 questions. 5 minutes. Know exactly where you stand in your NIL position and what to do next.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0e14;
+    --bg-elev: #131820;
+    --bg-card: #1a212c;
+    --line: #2a3340;
+    --line-soft: #1f2733;
+    --text: #f4f6f8;
+    --text-dim: #9aa4b2;
+    --text-soft: #6b7585;
+    --accent: #c9a14a;
+    --accent-soft: rgba(201, 161, 74, 0.12);
+    --accent-line: rgba(201, 161, 74, 0.35);
+    --red: #d65a4a;
+    --green: #5ab97a;
+    --shadow: 0 20px 60px rgba(0,0,0,0.4);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+  }
+
+  body {
+    background:
+      radial-gradient(ellipse at top, rgba(201,161,74,0.06) 0%, transparent 50%),
+      radial-gradient(ellipse at bottom, rgba(20,30,50,0.4) 0%, transparent 60%),
+      var(--bg);
+    background-attachment: fixed;
+  }
+
+  .container {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  /* Header */
+  header {
+    padding: 20px 0;
+    border-bottom: 1px solid var(--line-soft);
+    margin-bottom: 24px;
+  }
+  .nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 700;
+  }
+  .nav-meta {
+    color: var(--text-soft);
+    font-weight: 500;
+  }
+
+  /* Screens */
+  .screen { display: none; padding: 12px 0 60px; }
+  .screen.active { display: block; }
+
+  /* Hero / Intro */
+  .eyebrow {
+    color: var(--accent);
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(54px, 12vw, 96px);
+    line-height: 0.9;
+    letter-spacing: 0.01em;
+    margin-bottom: 20px;
+  }
+  h1 em {
+    color: var(--accent);
+    font-style: italic;
+    font-weight: 400;
+  }
+  .lede {
+    font-size: 17px;
+    color: var(--text-dim);
+    margin-bottom: 8px;
+    max-width: 580px;
+  }
+  .lede strong { color: var(--text); font-weight: 600; }
+  .sub {
+    font-size: 15px;
+    color: var(--text-soft);
+    margin-bottom: 32px;
+    max-width: 580px;
+  }
+
+  .pillars {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: 36px;
+  }
+  .pillar-chip {
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 14px 14px;
+    background: var(--bg-elev);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .pillar-chip span {
+    display: block;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+    font-weight: 700;
+  }
+
+  /* Form */
+  .gate-title {
+    font-size: 13px;
+    color: var(--accent);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+  .form-grid {
+    display: grid;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .field label {
+    display: block;
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-bottom: 6px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .field input,
+  .field select {
+    width: 100%;
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    color: var(--text);
+    padding: 14px 14px;
+    font-size: 16px;
+    font-family: inherit;
+    border-radius: 6px;
+    transition: border-color 0.15s ease;
+  }
+  .field input:focus,
+  .field select:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+  .field .err {
+    display: none;
+    font-size: 12px;
+    color: var(--red);
+    margin-top: 6px;
+  }
+  .field.invalid .err { display: block; }
+  .field.invalid input,
+  .field.invalid select { border-color: var(--red); }
+
+  .consent {
+    display: none;
+    background: var(--accent-soft);
+    border: 1px solid var(--accent-line);
+    padding: 16px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+  }
+  .consent.show { display: block; }
+  .consent label {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    cursor: pointer;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--text);
+  }
+  .consent input { margin-top: 3px; flex-shrink: 0; }
+  .consent strong { color: var(--accent); }
+  .consent.invalid { border-color: var(--red); }
+  .consent .consent-err {
+    display: none;
+    font-size: 12px;
+    color: var(--red);
+    margin-top: 10px;
+  }
+  .consent.invalid .consent-err { display: block; }
+
+  /* Buttons */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--accent);
+    color: #0a0e14;
+    border: none;
+    padding: 18px 32px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: transform 0.1s ease, background 0.15s ease;
+    text-decoration: none;
+    width: 100%;
+    font-weight: 400;
+  }
+  .btn:hover { background: #d6ae5a; }
+  .btn:active { transform: scale(0.98); }
+  .btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    background: var(--line);
+    color: var(--text-soft);
+  }
+  .btn.ghost {
+    background: transparent;
+    color: var(--text-dim);
+    border: 1px solid var(--line);
+  }
+  .btn.ghost:hover { border-color: var(--accent); color: var(--accent); background: transparent; }
+
+  .btn-row {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+  }
+  .btn-row .btn { flex: 1; }
+  .btn-row .btn.ghost { flex: 0 0 100px; }
+
+  /* Question screen */
+  .progress-bar {
+    background: var(--bg-elev);
+    height: 3px;
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--accent);
+    width: 0%;
+    transition: width 0.3s ease;
+  }
+  .qmeta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+  .qmeta .pillar {
+    font-size: 12px;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+  .qmeta .count {
+    font-size: 13px;
+    color: var(--text-soft);
+    font-weight: 600;
+  }
+  .qmeta .count strong { color: var(--text); }
+
+  .question-text {
+    font-size: 22px;
+    line-height: 1.35;
+    font-weight: 600;
+    margin-bottom: 28px;
+    color: var(--text);
+  }
+
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .option {
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 16px 18px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    font-size: 15px;
+    line-height: 1.45;
+    color: var(--text-dim);
+    text-align: left;
+    font-family: inherit;
+    width: 100%;
+  }
+  .option:hover {
+    border-color: var(--accent-line);
+    background: var(--bg-card);
+  }
+  .option.selected {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+    color: var(--text);
+  }
+
+  /* Loading */
+  .loading {
+    text-align: center;
+    padding: 80px 0;
+  }
+  .loading h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    letter-spacing: 0.05em;
+    margin-bottom: 12px;
+  }
+  .loading p { color: var(--text-soft); }
+  .spinner {
+    width: 40px;
+    height: 40px;
+    border: 2px solid var(--line);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 24px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Results */
+  .results-eyebrow {
+    color: var(--accent);
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+  .tier-card {
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 32px 24px;
+    text-align: center;
+    margin-bottom: 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .tier-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--accent);
+  }
+  .tier-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 48px;
+    letter-spacing: 0.05em;
+    color: var(--accent);
+    margin-bottom: 6px;
+    line-height: 1;
+  }
+  .tier-score {
+    font-size: 14px;
+    color: var(--text-soft);
+    margin-bottom: 18px;
+  }
+  .tier-score strong {
+    color: var(--text);
+    font-size: 18px;
+    font-weight: 700;
+  }
+  .tier-desc {
+    font-size: 15px;
+    color: var(--text-dim);
+    line-height: 1.55;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  .breakdown-title {
+    font-size: 13px;
+    color: var(--accent);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 14px;
+  }
+  .breakdown {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+  .pillar-row {
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 14px 16px;
+  }
+  .pillar-row-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .pillar-row-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .pillar-row-score {
+    font-size: 13px;
+    color: var(--text-dim);
+    font-weight: 600;
+  }
+  .pillar-row-score strong { color: var(--accent); }
+  .pillar-bar {
+    background: var(--line-soft);
+    height: 4px;
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .pillar-bar-fill {
+    height: 100%;
+    background: var(--accent);
+    transition: width 0.6s ease;
+  }
+
+  .cta-block {
+    background: var(--bg-elev);
+    border: 1px solid var(--accent-line);
+    border-radius: 8px;
+    padding: 24px;
+    margin-bottom: 16px;
+  }
+  .cta-block h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 0.04em;
+    margin-bottom: 10px;
+  }
+  .cta-block p {
+    color: var(--text-dim);
+    font-size: 15px;
+    margin-bottom: 18px;
+  }
+  .cta-block p a { color: var(--accent); text-decoration: none; font-weight: 600; }
+
+  /* Footer */
+  footer {
+    border-top: 1px solid var(--line-soft);
+    padding: 24px 0 40px;
+    margin-top: 40px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--text-soft);
+    line-height: 1.6;
+  }
+  footer a { color: var(--accent); text-decoration: none; }
+
+  @media (min-width: 640px) {
+    .pillars { grid-template-columns: repeat(4, 1fr); }
+    .form-grid { grid-template-columns: 1fr 1fr; }
+    .field.full { grid-column: 1 / -1; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <header>
+    <div class="nav">
+      <a href="https://www.pivotpac.com">PIVOTPAC</a>
+      <span class="nav-meta">NIL Readiness</span>
+    </div>
+  </header>
+
+  <!-- INTRO SCREEN -->
+  <section class="screen active" id="screen-intro">
+    <div class="eyebrow">Pivot Athletic Consulting</div>
+    <h1>Are You <em>Ready?</em></h1>
+    <p class="lede"><strong>You made it. Now what?</strong></p>
+    <p class="sub">12 questions. 4 pillars. One honest score. You will see where you are solid, where you are exposed and what to handle first. No talking down. No fluff.</p>
+
+    <div class="pillars">
+      <div class="pillar-chip"><span>Pillar 01</span>Identity Foundation</div>
+      <div class="pillar-chip"><span>Pillar 02</span>Decision Framework</div>
+      <div class="pillar-chip"><span>Pillar 03</span>Performance Infrastructure</div>
+      <div class="pillar-chip"><span>Pillar 04</span>Optionality</div>
+    </div>
+
+    <div class="gate-title">Before we start</div>
+
+    <form id="gate-form" novalidate>
+      <div class="form-grid">
+        <div class="field full">
+          <label for="athleteName">Full Name</label>
+          <input type="text" id="athleteName" autocomplete="name">
+          <div class="err">Required</div>
+        </div>
+        <div class="field">
+          <label for="athleteEmail">Email</label>
+          <input type="email" id="athleteEmail" autocomplete="email">
+          <div class="err">Valid email required</div>
+        </div>
+        <div class="field">
+          <label for="athletePhone">Phone</label>
+          <input type="tel" id="athletePhone" autocomplete="tel">
+          <div class="err">Required</div>
+        </div>
+        <div class="field">
+          <label for="athleteSport">Sport</label>
+          <input type="text" id="athleteSport">
+          <div class="err">Required</div>
+        </div>
+        <div class="field">
+          <label for="schoolLevel">School Level</label>
+          <select id="schoolLevel">
+            <option value="">Select your level</option>
+            <option>High School</option>
+            <option>JUCO</option>
+            <option>NAIA</option>
+            <option>NCAA D3</option>
+            <option>NCAA D2</option>
+            <option>D1 (Non-Power)</option>
+            <option>D1 Power (SEC, Big Ten, ACC, Big 12)</option>
+            <option>Professional / Post-Collegiate</option>
+          </select>
+          <div class="err">Required</div>
+        </div>
+      </div>
+
+      <div class="consent" id="consent-block">
+        <label>
+          <input type="checkbox" id="consentCheck">
+          <span><strong>Parental consent.</strong> I confirm a parent or legal guardian has reviewed and approved my participation. Required if you are in high school.</span>
+        </label>
+        <div class="consent-err">Parental consent is required for high school athletes.</div>
+      </div>
+
+      <button type="button" class="btn" id="start-btn">Begin Assessment</button>
+    </form>
+  </section>
+
+  <!-- QUESTION SCREEN -->
+  <section class="screen" id="screen-question">
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+    <div class="qmeta">
+      <span class="pillar" id="q-pillar">Identity Foundation</span>
+      <span class="count"><strong id="q-num">1</strong> / 12</span>
+    </div>
+
+    <h2 class="question-text" id="q-text">Question text</h2>
+
+    <div class="options" id="q-options"></div>
+
+    <div class="btn-row">
+      <button type="button" class="btn ghost" id="back-btn">Back</button>
+      <button type="button" class="btn" id="next-btn" disabled>Next</button>
+    </div>
+  </section>
+
+  <!-- LOADING SCREEN -->
+  <section class="screen" id="screen-loading">
+    <div class="loading">
+      <div class="spinner"></div>
+      <h2>Analyzing Your Results</h2>
+      <p>Scoring across all four Pivot OS pillars</p>
+    </div>
+  </section>
+
+  <!-- RESULTS SCREEN -->
+  <section class="screen" id="screen-results">
+    <div class="results-eyebrow">Your NIL Readiness Score</div>
+
+    <div class="tier-card">
+      <div class="tier-name" id="tier-name">LOCKED IN</div>
+      <div class="tier-score"><strong id="score-display">0</strong> / 48</div>
+      <p class="tier-desc" id="tier-desc">Description here</p>
+    </div>
+
+    <div class="breakdown-title">Pillar Breakdown</div>
+    <div class="breakdown" id="breakdown"></div>
+
+    <div class="cta-block">
+      <h3>Book Your Fit Session</h3>
+      <p>Your score is in. Want to know what it actually means for your next move? Book a Fit Session with Evan, or reach him at <a href="mailto:evan@pivotpac.com">evan@pivotpac.com</a>.</p>
+      <a class="btn" href="https://calendly.com/evanlralexander">Book the Fit Session</a>
+    </div>
+
+    <button type="button" class="btn ghost" id="retake-btn">Retake Assessment</button>
+  </section>
+
+  <footer>
+    Your information is private and will never be sold or shared.<br>
+    Results are designed to inform, not replace, personalized advisory guidance.<br>
+    Questions? <a href="mailto:evan@pivotpac.com">evan@pivotpac.com</a> | <a href="https://www.pivotpac.com">pivotpac.com</a>
+  </footer>
+
+</div>
+
+<script>
+const QUESTIONS = [
+  // PILLAR 1: IDENTITY FOUNDATION
+  {
+    pillar: "Identity Foundation",
+    text: "Someone meets you for the first time and asks what you do. How much of your answer leans on the sport?",
+    options: [
+      { text: "All of it. The sport is my answer.", score: 1 },
+      { text: "Most of it. Take away the sport and I would not know what to say.", score: 2 },
+      { text: "Some of it. My character and what I believe show up too.", score: 3 },
+      { text: "The sport is part of how I show up. It is not who I am underneath.", score: 4 }
+    ]
+  },
+  {
+    pillar: "Identity Foundation",
+    text: "If the sport ended tomorrow, injury or cut or portal, who are you the next morning?",
+    options: [
+      { text: "I have never let myself think about that.", score: 1 },
+      { text: "I have thought about it. It scares me more than I admit.", score: 2 },
+      { text: "I would take the hit, then I would be okay. I know there is more to me even if I cannot name it yet.", score: 3 },
+      { text: "I know exactly who I am without the sport. The game is something I do. It is not what I am.", score: 4 }
+    ]
+  },
+  {
+    pillar: "Identity Foundation",
+    text: "Comments, criticism, the noise online. What does it actually do to you?",
+    options: [
+      { text: "It gets in. It moves my mood and my game.", score: 1 },
+      { text: "I act unbothered. It still rattles me.", score: 2 },
+      { text: "I handle most of it. Some days hit harder.", score: 3 },
+      { text: "I know what to take in and what to let bounce. The noise does not run me.", score: 4 }
+    ]
+  },
+
+  // PILLAR 2: DECISION FRAMEWORK
+  {
+    pillar: "Decision Framework",
+    text: "An offer hits your phone. What happens between the message and your yes?",
+    options: [
+      { text: "If the money is right, I am in. That is the process.", score: 1 },
+      { text: "I think on it. The dollar amount usually decides it.", score: 2 },
+      { text: "I weigh the brand, my time and the money before I answer.", score: 3 },
+      { text: "I have walked away from money because the deal was wrong. My filter is tested, not theoretical.", score: 4 }
+    ]
+  },
+  {
+    pillar: "Decision Framework",
+    text: "When real money or a contract is on the table, whose read do you actually trust?",
+    options: [
+      { text: "Whoever is loudest, or whoever got to me first.", score: 1 },
+      { text: "A friend or someone in the family. Nobody who knows this world.", score: 2 },
+      { text: "One person I trust gives me a read when I ask.", score: 3 },
+      { text: "I have a named attorney, a named CPA and one advisor I chose myself. They do not all know each other through me.", score: 4 }
+    ]
+  },
+  {
+    pillar: "Decision Framework",
+    text: "NIL money is income. The IRS knows. How clear are you on what you will actually owe?",
+    options: [
+      { text: "Not clear. I will deal with it when tax time comes.", score: 1 },
+      { text: "I know taxes are coming. No real plan for it.", score: 2 },
+      { text: "I set some aside and I have someone to call.", score: 3 },
+      { text: "I know my effective rate, I set aside a percentage every payment and my CPA has seen my NIL income specifically.", score: 4 }
+    ]
+  },
+
+  // PILLAR 3: PERFORMANCE INFRASTRUCTURE
+  {
+    pillar: "Performance Infrastructure",
+    text: "Track the money for a second. When NIL income comes in, where does it actually go?",
+    options: [
+      { text: "No system. Whatever comes in I will figure it out then.", score: 1 },
+      { text: "Loose. A note here, a number in my head.", score: 2 },
+      { text: "I track income and expenses in an app or a sheet.", score: 3 },
+      { text: "Banking, tracking and a tax plan all set, money or not.", score: 4 }
+    ]
+  },
+  {
+    pillar: "Performance Infrastructure",
+    text: "Have you personally sat down with a financial advisor, a CPA or an attorney? Not your parents. You.",
+    options: [
+      { text: "No.", score: 1 },
+      { text: "We have talked about it. No meeting yet.", score: 2 },
+      { text: "One of the three, yes.", score: 3 },
+      { text: "All three, and I can tell you exactly what I pay each one to handle.", score: 4 }
+    ]
+  },
+  {
+    pillar: "Performance Infrastructure",
+    text: "When you sign a deal, how does it get handled on paper?",
+    options: [
+      { text: "Handshake or text. I would not really know what to look for.", score: 1 },
+      { text: "Some paperwork. Hit or miss.", score: 2 },
+      { text: "I read the whole thing before I sign.", score: 3 },
+      { text: "Every deal has been reviewed by my attorney before I sign. I have a file with every contract I have touched.", score: 4 }
+    ]
+  },
+
+  // PILLAR 4: OPTIONALITY
+  {
+    pillar: "Optionality",
+    text: "Twelve months from now the playing stops for good. What is already in motion for what comes next?",
+    options: [
+      { text: "Nothing. I have not looked that far.", score: 1 },
+      { text: "Finish school and figure it out from there.", score: 2 },
+      { text: "I have real ideas for life after the sport.", score: 3 },
+      { text: "A path is already moving. School, skills and income that does not need the jersey.", score: 4 }
+    ]
+  },
+  {
+    pillar: "Optionality",
+    text: "Of the NIL money you have made, how much is still working for you?",
+    options: [
+      { text: "No plan. It comes, it goes, sometimes to people who ask.", score: 1 },
+      { text: "I mean to save. It does not always happen.", score: 2 },
+      { text: "A set amount goes to savings before I spend.", score: 3 },
+      { text: "Saving, investing and giving, decided ahead of time and on schedule.", score: 4 }
+    ]
+  },
+  {
+    pillar: "Optionality",
+    text: "Be honest. Are you building the life after the sport, or all in on the game with no plan B?",
+    options: [
+      { text: "All in on the game. No plan B.", score: 1 },
+      { text: "I have ideas. Nothing in motion.", score: 2 },
+      { text: "I am building something on the side right now.", score: 3 },
+      { text: "I am building income and skills right now that will outlast the jersey.", score: 4 }
+    ]
+  }
+];
+
+const TIERS = [
+  {
+    min: 12, max: 20,
+    name: "ROOKIE",
+    desc: "You are running on talent and instinct. The off the field stuff is not in place yet. A big offer, real money or one bad break would force calls you are not ready to make. This is the time to build the foundation, before the next opportunity puts you on the spot."
+  },
+  {
+    min: 21, max: 30,
+    name: "IN THE FILM ROOM",
+    desc: "You see the tape. You know where the gaps are. The structure is starting to form and the weak spots are still easy to fix right now. They get a lot harder to fix once the contracts and bigger numbers hit the table."
+  },
+  {
+    min: 31, max: 40,
+    name: "STARTER",
+    desc: "Strong position. You have done work most athletes your age have not touched. A few areas still need reps before solid turns into locked in. The next move is closing those gaps before they turn into exposure."
+  },
+  {
+    min: 41, max: 48,
+    name: "LOCKED IN",
+    desc: "You are built for the long game. Identity, decisions, structure and optionality are all running. The work now is protecting what you have built and scaling it. The sport is the launchpad, and the life past it is already in view."
+  }
+];
+
+let answers = [];
+let currentQ = 0;
+let formData = {};
+
+const $ = id => document.getElementById(id);
+
+// Conditional parental consent: show for high school athletes
+$('schoolLevel').addEventListener('change', () => {
+  const consentBlock = $('consent-block');
+  if ($('schoolLevel').value === 'High School') {
+    consentBlock.classList.add('show');
+  } else {
+    consentBlock.classList.remove('show');
+    consentBlock.classList.remove('invalid');
+    $('consentCheck').checked = false;
+  }
+});
+
+$('start-btn').addEventListener('click', () => {
+  const fields = [
+    { id: 'athleteName', val: $('athleteName').value.trim() },
+    { id: 'athleteEmail', val: $('athleteEmail').value.trim() },
+    { id: 'athletePhone', val: $('athletePhone').value.trim() },
+    { id: 'athleteSport', val: $('athleteSport').value.trim() },
+    { id: 'schoolLevel', val: $('schoolLevel').value }
+  ];
+
+  let valid = true;
+  fields.forEach(f => {
+    const wrap = $(f.id).parentElement;
+    let ok = f.val.length > 0;
+    if (f.id === 'athleteEmail') ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.val);
+    wrap.classList.toggle('invalid', !ok);
+    if (!ok) valid = false;
+  });
+
+  // Parental consent required when high school is selected
+  const consentBlock = $('consent-block');
+  if (consentBlock.classList.contains('show')) {
+    const consentOk = $('consentCheck').checked;
+    consentBlock.classList.toggle('invalid', !consentOk);
+    if (!consentOk) valid = false;
+  }
+
+  if (!valid) return;
+
+  formData = {
+    athleteName: $('athleteName').value.trim(),
+    athleteEmail: $('athleteEmail').value.trim(),
+    athletePhone: $('athletePhone').value.trim(),
+    athleteSport: $('athleteSport').value.trim(),
+    schoolLevel: $('schoolLevel').value,
+    consent: $('consentCheck').checked,
+    timestamp: new Date().toISOString()
+  };
+
+  // Hook for Mailchimp / CRM integration goes here
+  // Example: fetch('/api/lead', { method: 'POST', body: JSON.stringify(formData) });
+
+  currentQ = 0;
+  answers = [];
+  showScreen('question');
+  renderQuestion();
+});
+
+function showScreen(name) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  $(`screen-${name}`).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function renderQuestion() {
+  const q = QUESTIONS[currentQ];
+  $('q-pillar').textContent = q.pillar;
+  $('q-num').textContent = currentQ + 1;
+  $('q-text').textContent = q.text;
+  $('progress-fill').style.width = `${((currentQ) / QUESTIONS.length) * 100}%`;
+
+  const opts = $('q-options');
+  opts.innerHTML = '';
+  q.options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'option';
+    btn.textContent = opt.text;
+    if (answers[currentQ] === i) btn.classList.add('selected');
+    btn.addEventListener('click', () => {
+      answers[currentQ] = i;
+      document.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+      btn.classList.add('selected');
+      $('next-btn').disabled = false;
+    });
+    opts.appendChild(btn);
+  });
+
+  $('next-btn').disabled = answers[currentQ] === undefined;
+  $('back-btn').style.visibility = currentQ === 0 ? 'hidden' : 'visible';
+  $('next-btn').textContent = currentQ === QUESTIONS.length - 1 ? 'See Results' : 'Next';
+}
+
+$('next-btn').addEventListener('click', () => {
+  if (answers[currentQ] === undefined) return;
+  if (currentQ < QUESTIONS.length - 1) {
+    currentQ++;
+    renderQuestion();
+  } else {
+    showScreen('loading');
+    setTimeout(showResults, 1600);
+  }
+});
+
+$('back-btn').addEventListener('click', () => {
+  if (currentQ > 0) {
+    currentQ--;
+    renderQuestion();
+  }
+});
+
+function showResults() {
+  let total = 0;
+  const pillarTotals = {
+    "Identity Foundation": 0,
+    "Decision Framework": 0,
+    "Performance Infrastructure": 0,
+    "Optionality": 0
+  };
+
+  QUESTIONS.forEach((q, i) => {
+    const s = q.options[answers[i]].score;
+    total += s;
+    pillarTotals[q.pillar] += s;
+  });
+
+  const tier = TIERS.find(t => total >= t.min && total <= t.max);
+  $('tier-name').textContent = tier.name;
+  $('tier-desc').textContent = tier.desc;
+  $('score-display').textContent = total;
+
+  const bdown = $('breakdown');
+  bdown.innerHTML = '';
+  Object.entries(pillarTotals).forEach(([name, score]) => {
+    const pct = (score / 12) * 100;
+    const weak = score <= 6;
+    const color = weak ? 'var(--red)' : 'var(--accent)';
+    const row = document.createElement('div');
+    row.className = 'pillar-row';
+    row.innerHTML = `
+      <div class="pillar-row-top">
+        <span class="pillar-row-name">${name}</span>
+        <span class="pillar-row-score"><strong style="color:${color}">${score}</strong> / 12</span>
+      </div>
+      <div class="pillar-bar"><div class="pillar-bar-fill" style="width:0%; background:${color}"></div></div>
+    `;
+    bdown.appendChild(row);
+    setTimeout(() => {
+      row.querySelector('.pillar-bar-fill').style.width = `${pct}%`;
+    }, 100);
+  });
+
+  // Hook for results submission to CRM
+  // fetch('/api/results', { method: 'POST', body: JSON.stringify({ ...formData, answers, total, pillarTotals }) });
+
+  showScreen('results');
+}
+
+$('retake-btn').addEventListener('click', () => {
+  answers = [];
+  currentQ = 0;
+  document.querySelectorAll('input').forEach(i => {
+    if (i.type === 'checkbox') { i.checked = false; } else { i.value = ''; }
+  });
+  $('schoolLevel').value = '';
+  $('consent-block').classList.remove('show');
+  $('consent-block').classList.remove('invalid');
+  showScreen('intro');
+});
+</script>
+
+</body>
+</html>
